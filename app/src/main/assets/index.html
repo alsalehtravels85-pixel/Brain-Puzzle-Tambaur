@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#080d2b"><title>Tambaur Bubble Shooter</title>
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#fff;background:#071d1b}
-body{min-height:100dvh;background:radial-gradient(ellipse at 12% 0%,#14665a 0,transparent 42%),radial-gradient(ellipse at 95% 35%,#174c58 0,transparent 40%),linear-gradient(160deg,#061b1a,#0b302d 55%,#071b20);display:flex;justify-content:center;overflow-x:hidden}
-.app{width:min(100%,620px);padding:10px 12px 18px;display:flex;flex-direction:column;gap:10px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#fff;background:#071d1b}
+body{height:100dvh;min-height:100dvh;background:radial-gradient(ellipse at 12% 0%,#14665a 0,transparent 42%),radial-gradient(ellipse at 95% 35%,#174c58 0,transparent 40%),linear-gradient(160deg,#061b1a,#0b302d 55%,#071b20);display:flex;justify-content:center;overflow-x:hidden}
+.app{width:100%;max-width:720px;height:100dvh;min-height:0;padding:8px 10px 10px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
 .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .brand{display:flex;align-items:center;gap:9px;font-size:12px;letter-spacing:1.3px;font-weight:950;color:#dbeafe}
 .logo{width:43px;height:43px;flex:none;filter:drop-shadow(0 4px 10px #00d9ff66)}
@@ -17,9 +17,9 @@ h1 span{background:linear-gradient(90deg,#fde047,#fb923c,#f472b6);background-cli
 .stat{background:linear-gradient(145deg,#ffffff1c,#ffffff08);border:1px solid #ffffff26;border-radius:15px;padding:8px 5px;text-align:center;box-shadow:inset 0 1px #ffffff20,0 6px 18px #0003}
 .stat label{display:block;font-size:9px;letter-spacing:1.4px;color:#c4b5fd;font-weight:900}
 .stat b{font-size:21px;line-height:1.25}
-.stage{position:relative;border:1px solid #ffffff35;border-radius:22px;padding:7px;background:linear-gradient(145deg,#174b43,#092b2a);box-shadow:0 16px 40px #0008,inset 0 1px #ffffff30;overflow:hidden}
-canvas{display:block;width:100%;height:clamp(650px,112vw,760px)!important;touch-action:none;border-radius:15px;background:#183c55}
-.boosters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.boost{border:1px solid #ffffff35;border-radius:13px;padding:9px 4px;background:linear-gradient(145deg,#28665a,#123d39);color:#fff;font-weight:900;font-size:11px}.boost.active{outline:2px solid #facc15;box-shadow:0 0 18px #facc1580}.boost small{display:block;color:#c7d2fe;font-size:9px;margin-top:2px}.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stage{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;border:1px solid #ffffff35;border-radius:22px;padding:6px;background:linear-gradient(145deg,#174b43,#092b2a);box-shadow:0 16px 40px #0008,inset 0 1px #ffffff30;overflow:hidden}
+canvas{display:block;width:100%;height:100%!important;min-height:0;flex:1;touch-action:none;border-radius:15px;background:#183c55}
+.boosters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:none}.boost{border:1px solid #ffffff35;border-radius:13px;padding:9px 4px;background:linear-gradient(145deg,#28665a,#123d39);color:#fff;font-weight:900;font-size:11px}.boost.active{outline:2px solid #facc15;box-shadow:0 0 18px #facc1580}.boost small{display:block;color:#c7d2fe;font-size:9px;margin-top:2px}.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
 .action{border:1px solid #ffffff30;border-radius:15px;padding:12px 6px;font-weight:900;color:white;background:linear-gradient(145deg,#28665a,#123d39);box-shadow:0 6px 16px #0004;font-size:12px}
 .action.hot{background:linear-gradient(110deg,#fbbf24,#f59e0b);color:#270c32;border:0}
 .action:active,.round:active{transform:scale(.97)}
@@ -38,7 +38,7 @@ canvas{display:block;width:100%;height:clamp(650px,112vw,760px)!important;touch-
 .message{text-align:center;color:#c7d2fe;font-size:13px;line-height:1.6}
 @media(max-height:740px){.app{gap:8px;padding-top:8px}.logo{width:36px;height:36px}.stat{padding:6px}.stage{padding:5px}}
 
-/* premium midnight arcade theme */body{background:radial-gradient(ellipse at 10% 8%,#174c68 0,transparent 35%),radial-gradient(ellipse at 90% 75%,#48275f 0,transparent 38%),linear-gradient(145deg,#080f22,#111a35 52%,#071725)!important}.top{padding:12px 14px;border:1px solid #91b7dc38;border-radius:22px;background:linear-gradient(135deg,#162b49dd,#111a33dd);box-shadow:0 16px 45px #02061788}.stats .stat{background:linear-gradient(145deg,#1b3152dd,#101d35ee)!important;border:1px solid #93c5fd35!important;border-radius:18px!important;box-shadow:inset 0 1px #ffffff16,0 10px 24px #02061755!important}.stage{background:linear-gradient(145deg,#142a49,#0b172c)!important;border:1px solid #7dd3fc55!important;border-radius:28px!important;box-shadow:0 18px 42px #02061799,inset 0 1px #ffffff20!important}.canvas{border-radius:20px}.boosters{display:flex!important;justify-content:center;gap:24px!important;margin:16px auto!important}.boost.iconBoost{position:relative;width:68px;height:68px;padding:0;border-radius:22px;display:grid;place-items:center;background:linear-gradient(145deg,#25496b,#142844);border:1px solid #9bd7ff70;box-shadow:0 8px 0 #091629,0 12px 24px #02061788,inset 0 1px #ffffff35}.powerIcon{font-size:31px;filter:drop-shadow(0 3px 5px #02061788)}.boost.iconBoost small{position:absolute;right:-7px;top:-7px;min-width:23px;height:23px;padding:0 5px;border-radius:20px;background:linear-gradient(135deg,#fbbf24,#f97316);color:#20120a;font-size:12px;font-weight:900;display:grid;place-items:center;border:2px solid #101d35}.boost.iconBoost.active{transform:translateY(-4px);outline:3px solid #67e8f9;box-shadow:0 5px 0 #091629,0 0 24px #22d3ee88}.action,.round,.close{border-radius:16px!important;background:linear-gradient(145deg,#25496b,#142844)!important;border:1px solid #9bd7ff45!important;box-shadow:0 5px 0 #091629!important}.action.hot,.close{background:linear-gradient(120deg,#fbbf24,#f97316)!important;color:#1c1917!important}.panel{background:linear-gradient(145deg,#172d4b,#0c1a30)!important;border:1px solid #93c5fd55!important;border-radius:26px!important}
+/* premium midnight arcade theme */body{background:radial-gradient(ellipse at 10% 8%,#174c68 0,transparent 35%),radial-gradient(ellipse at 90% 75%,#48275f 0,transparent 38%),linear-gradient(145deg,#080f22,#111a35 52%,#071725)!important}.top{padding:12px 14px;border:1px solid #91b7dc38;border-radius:22px;background:linear-gradient(135deg,#162b49dd,#111a33dd);box-shadow:0 16px 45px #02061788}.stats .stat{background:linear-gradient(145deg,#1b3152dd,#101d35ee)!important;border:1px solid #93c5fd35!important;border-radius:18px!important;box-shadow:inset 0 1px #ffffff16,0 10px 24px #02061755!important}.stage{background:linear-gradient(145deg,#142a49,#0b172c)!important;border:1px solid #7dd3fc55!important;border-radius:28px!important;box-shadow:0 18px 42px #02061799,inset 0 1px #ffffff20!important}.canvas{border-radius:20px}.boosters{display:flex!important;justify-content:center;gap:20px!important;margin:5px auto!important}.boost.iconBoost{position:relative;width:62px;height:62px;padding:0;border-radius:22px;display:grid;place-items:center;background:linear-gradient(145deg,#25496b,#142844);border:1px solid #9bd7ff70;box-shadow:0 8px 0 #091629,0 12px 24px #02061788,inset 0 1px #ffffff35}.powerIcon{font-size:31px;filter:drop-shadow(0 3px 5px #02061788)}.boost.iconBoost small{position:absolute;right:-7px;top:-7px;min-width:23px;height:23px;padding:0 5px;border-radius:20px;background:linear-gradient(135deg,#fbbf24,#f97316);color:#20120a;font-size:12px;font-weight:900;display:grid;place-items:center;border:2px solid #101d35}.boost.iconBoost.active{transform:translateY(-4px);outline:3px solid #67e8f9;box-shadow:0 5px 0 #091629,0 0 24px #22d3ee88}.action,.round,.close{border-radius:16px!important;background:linear-gradient(145deg,#25496b,#142844)!important;border:1px solid #9bd7ff45!important;box-shadow:0 5px 0 #091629!important}.action.hot,.close{background:linear-gradient(120deg,#fbbf24,#f97316)!important;color:#1c1917!important}.panel{background:linear-gradient(145deg,#172d4b,#0c1a30)!important;border:1px solid #93c5fd55!important;border-radius:26px!important}
 
 /* Aurora arcade visual refresh */
 body{background:radial-gradient(ellipse at 8% 10%,#155e75 0,transparent 34%),radial-gradient(ellipse at 92% 58%,#6b3b91 0,transparent 37%),linear-gradient(145deg,#071326,#101c3b 50%,#090f28)!important}
@@ -138,3 +138,24 @@ document.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>{b.classList
 init();requestAnimationFrame(frame);
 })();
 </script></body></html>
+<style>
+/* Full-screen phone layout: use every pixel for the game board. */
+html,body{overflow:hidden!important}
+.app{max-width:720px!important;height:100dvh!important;min-height:0!important;padding:7px 9px 8px!important;gap:6px!important}
+.top{flex:none!important;padding:8px 11px!important}
+.logo{width:37px!important;height:37px!important}
+h1{flex:none!important;font-size:clamp(23px,6vw,34px)!important}
+.subtitle{flex:none!important;font-size:11px!important;margin-top:-4px!important}
+.stats{flex:none!important;gap:6px!important}
+.stat{padding:5px 4px!important}
+.stat b{font-size:18px!important}
+.stage{flex:1 1 auto!important;min-height:0!important;padding:5px!important;border-radius:23px!important}
+.stage canvas{width:100%!important;height:100%!important;min-height:0!important;display:block!important}
+.boosters{flex:none!important;margin:3px auto!important;gap:18px!important}
+.boost.iconBoost{width:55px!important;height:55px!important;border-radius:17px!important}
+.powerIcon{font-size:26px!important}
+.controls{flex:none!important;gap:6px!important}
+.action{padding:7px 4px!important;font-size:10px!important}
+.tip,.footer{display:none!important}
+@media(max-height:720px){.top{padding:5px 9px!important}.logo{width:31px!important;height:31px!important}.stats .stat{padding:3px!important}.boost.iconBoost{width:46px!important;height:46px!important}.powerIcon{font-size:22px!important}.controls{display:none!important}}
+</style>
