@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <application
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/tambaur_status_logo"
         android:allowBackup="true"
         android:label="Tambaur Bubble Shooter"
         android:theme="@style/AppTheme">
