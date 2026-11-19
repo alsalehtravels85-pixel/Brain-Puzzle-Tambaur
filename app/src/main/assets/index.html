@@ -86,6 +86,29 @@ body{height:100%!important;min-height:0!important}
  .gameHeading .stat label{font-size:6px!important}
  .gameHeading .stat b{font-size:13px!important}
 }
+
+/* FINAL override: compact score / best / level cards */
+.gameHeading .stats{gap:4px!important;margin:0!important}
+.gameHeading .stat{
+  box-sizing:border-box!important;
+  height:32px!important;
+  min-height:32px!important;
+  max-height:32px!important;
+  padding:1px 3px!important;
+  border-radius:10px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:0!important;
+}
+.gameHeading .stat label{font-size:6px!important;line-height:1!important;letter-spacing:.8px!important;margin:0!important}
+.gameHeading .stat b{font-size:13px!important;line-height:1!important;margin:1px 0 0!important}
+@media(max-height:740px){
+ .gameHeading .stat{height:29px!important;min-height:29px!important;max-height:29px!important}
+ .gameHeading .stat label{font-size:5.5px!important}
+ .gameHeading .stat b{font-size:12px!important}
+}
 </style> 
 <style>
 /* Reference-style portrait arcade layout: slim brand bar, large sky-blue playfield, boosters and preserved ad slot. */
