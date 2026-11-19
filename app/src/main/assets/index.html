@@ -75,11 +75,28 @@ h1{font-size:19px!important;line-height:1!important;margin:0!important}
 .controls{display:none!important}
 .tip,.footer{display:none!important}
 @media(max-height:720px){.top{min-height:42px!important;padding:3px 7px!important}.logo{width:29px!important;height:29px!important}.round{width:32px!important;height:32px!important}.stats .stat{padding:2px!important}.boost.iconBoost{width:44px!important;height:44px!important}.powerIcon{font-size:21px!important}}
+
+.gameHeading{flex:none;text-align:center;display:flex;flex-direction:column;gap:5px;padding:1px 0 2px}
+.gameHeading h1{font-size:clamp(20px,5.4vw,27px)!important;line-height:1.05!important;margin:0!important}
+.gameHeading .subtitle{font-size:10px!important;margin:0!important}
+.gameHeading .stats{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px!important}
+.gameHeading .stat{min-height:43px;padding:4px 3px!important;border-radius:13px!important}
+.gameHeading .stat label{font-size:8px!important}
+.gameHeading .stat b{display:block;font-size:18px!important;line-height:1.1!important}
+@media(max-height:720px){.gameHeading{gap:3px}.gameHeading .stat{min-height:36px;padding:3px!important}.gameHeading .stat b{font-size:15px!important}}
 </style>
 </head><body>
 <main class="app">
 <header class="top"><div class="brand"><svg class="logo" viewBox="0 0 100 100" aria-label="Tambaur Arcade logo"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#67e8f9"/><stop offset=".48" stop-color="#818cf8"/><stop offset="1" stop-color="#f0abfc"/></linearGradient><radialGradient id="orb"><stop stop-color="#fff"/><stop offset=".35" stop-color="#a5f3fc"/><stop offset="1" stop-color="#0891b2"/></radialGradient></defs><path d="M50 3 91 26v48L50 97 9 74V26Z" fill="#101b3a" stroke="url(#lg)" stroke-width="5"/><path d="M50 13 82 31v38L50 87 18 69V31Z" fill="#172b52" stroke="#ffffff35" stroke-width="2"/><circle cx="36" cy="39" r="13" fill="#fb7185" stroke="#fff9" stroke-width="2"/><circle cx="65" cy="39" r="13" fill="url(#orb)" stroke="#fff9" stroke-width="2"/><circle cx="50" cy="65" r="14" fill="#facc15" stroke="#fff9" stroke-width="2"/><path d="m27 78 23 9 23-9" fill="none" stroke="#c4b5fd" stroke-width="3" stroke-linecap="round"/></svg><div>TAMBAUR ARCADE<small>BUBBLE SHOOTER</small></div></div><div class="topBtns"><button class="round" id="sound" aria-label="Sound">♫</button><button class="round" id="settings" aria-label="Settings">⚙</button></div></header>
-<div hidden aria-hidden="true"><span id="score">0</span><span id="best">0</span><span id="level">1</span></div>
+<section class="gameHeading" aria-label="Game title and scores">
+  <h1>BUBBLE <span>SHOOTER</span></h1>
+  <p class="subtitle">Aim • Match • Blast • Level Up!</p>
+  <div class="stats">
+    <div class="stat"><label>SCORE</label><b id="score">0</b></div>
+    <div class="stat"><label>BEST</label><b id="best">0</b></div>
+    <div class="stat"><label>LEVEL</label><b id="level">1</b></div>
+  </div>
+</section>
 
 <section class="stage"><canvas id="game" width="480" height="610"></canvas></section>
 <section class="boosters"><button class="boost iconBoost" data-power="bomb" aria-label="Bomb"><span class="powerIcon">💣</span><small id="bombCount">3</small></button><button class="boost iconBoost" data-power="rainbow" aria-label="Rainbow"><span class="powerIcon">🌈</span><small id="rainbowCount">3</small></button><button class="boost iconBoost" data-power="lightning" aria-label="Lightning"><span class="powerIcon">⚡</span><small id="lightningCount">2</small></button></section>
