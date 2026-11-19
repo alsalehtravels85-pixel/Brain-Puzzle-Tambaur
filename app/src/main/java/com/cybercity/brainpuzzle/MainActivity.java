@@ -64,8 +64,12 @@ public class MainActivity extends Activity {
         gameView.addJavascriptInterface(new GameAdsBridge(), "AndroidAds");
         root.addView(gameView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
-        // Full-screen gameplay: hide the banner to give the playfield the entire display.
-        bannerAd = null;
+        // Keep the AdMob banner visible below the game.
+        bannerAd = new AdView(this);
+        bannerAd.setAdUnitId(bannerId());
+        int adWidth = (int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density);
+        bannerAd.setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth));
+        root.addView(bannerAd, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         setContentView(root);
         gameView.loadUrl("file:///android_asset/index.html");
@@ -73,6 +77,7 @@ public class MainActivity extends Activity {
 
         MobileAds.initialize(this, initializationStatus -> runOnUiThread(() -> {
             adsReady = true;
+            bannerAd.loadAd(new AdRequest.Builder().build());
             loadInterstitial();
             loadRewarded();
         }));
@@ -134,9 +139,7 @@ public class MainActivity extends Activity {
     private void applyImmersiveMode() {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         );
@@ -148,12 +151,14 @@ public class MainActivity extends Activity {
     }
 
     @Override protected void onPause() {
+        if (bannerAd != null) bannerAd.pause();
         if (gameView != null) gameView.onPause();
         super.onPause();
     }
 
     @Override protected void onResume() {
         super.onResume();
+        if (bannerAd != null) bannerAd.resume();
         if (gameView != null) gameView.onResume();
         UpdateManager.resumeInstall(this);
     }
@@ -165,6 +170,7 @@ public class MainActivity extends Activity {
 
     @Override protected void onDestroy() {
         UpdateManager.unregister(this);
+        if (bannerAd != null) { bannerAd.destroy(); bannerAd = null; }
         if (gameView != null) { gameView.destroy(); gameView = null; }
         super.onDestroy();
     }
