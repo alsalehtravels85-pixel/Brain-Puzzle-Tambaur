@@ -1,8 +1,4 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
-<path android:fillColor="#10194B" android:pathData="M54,4A50,50 0,1 0,54 104A50,50 0,1 0,54 4"/>
-<path android:strokeColor="#22D3EE" android:strokeWidth="3" android:fillColor="#21165D" android:pathData="M54,9L94,32L94,76L54,99L14,76L14,32Z"/>
-<path android:fillColor="#FF477E" android:pathData="M35,30a12,12 0,1 0,0 24a12,12 0,1 0,0 -24"/>
-<path android:fillColor="#29D7FF" android:pathData="M70,30a12,12 0,1 0,0 24a12,12 0,1 0,0 -24"/>
-<path android:fillColor="#FFCF33" android:pathData="M53,53a14,14 0,1 0,0 28a14,14 0,1 0,0 -28"/>
-<path android:fillColor="#FFFFFF" android:pathData="M31,83h46v4h-46z"/>
-</vector>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/tambaur_status_logo"
+    android:gravity="center"
+    android:filter="true" />
