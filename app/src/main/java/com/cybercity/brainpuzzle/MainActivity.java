@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.util.DisplayMetrics;
 
 import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -30,7 +29,6 @@ public class MainActivity extends Activity {
     private static final String TEST_BANNER = "ca-app-pub-3940256099942544/9214589741";
     private static final String TEST_INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712";
     private static final String TEST_REWARDED = "ca-app-pub-3940256099942544/5224354917";
-
     private static final String LIVE_BANNER = "ca-app-pub-9762635033302606/4968501939";
     private static final String LIVE_INTERSTITIAL = "ca-app-pub-9762635033302606/1539558663";
     private static final String LIVE_REWARDED = "ca-app-pub-9762635033302606/7188517343";
@@ -50,7 +48,6 @@ public class MainActivity extends Activity {
         super.onCreate(state);
         getWindow().setStatusBarColor(0xFF111827);
         getWindow().setNavigationBarColor(0xFF111827);
-
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setBackgroundColor(0xFF111827);
@@ -62,19 +59,18 @@ public class MainActivity extends Activity {
         settings.setDomStorageEnabled(true);
         gameView.setWebChromeClient(new WebChromeClient());
         gameView.addJavascriptInterface(new GameAdsBridge(), "AndroidAds");
-        root.addView(gameView, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        root.addView(gameView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
         bannerAd = new AdView(this);
         bannerAd.setAdUnitId(bannerId());
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int adWidth = (int) (dm.widthPixels / dm.density);
         bannerAd.setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth));
-        root.addView(bannerAd, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        root.addView(bannerAd, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         setContentView(root);
         gameView.loadUrl("file:///android_asset/index.html");
+        UpdateManager.check(this);
 
         MobileAds.initialize(this, initializationStatus -> runOnUiThread(() -> {
             adsReady = true;
@@ -86,48 +82,30 @@ public class MainActivity extends Activity {
 
     private void loadInterstitial() {
         if (!adsReady || isFinishing()) return;
-        InterstitialAd.load(this, interstitialId(), new AdRequest.Builder().build(),
-                new InterstitialAdLoadCallback() {
-                    @Override public void onAdLoaded(InterstitialAd ad) {
-                        interstitialAd = ad;
-                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override public void onAdDismissedFullScreenContent() {
-                                interstitialAd = null;
-                                loadInterstitial();
-                            }
-                            @Override public void onAdFailedToShowFullScreenContent(AdError error) {
-                                interstitialAd = null;
-                                loadInterstitial();
-                            }
-                        });
-                    }
-                    @Override public void onAdFailedToLoad(LoadAdError error) {
-                        interstitialAd = null;
-                    }
+        InterstitialAd.load(this, interstitialId(), new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
+            @Override public void onAdLoaded(InterstitialAd ad) {
+                interstitialAd = ad;
+                interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override public void onAdDismissedFullScreenContent() { interstitialAd = null; loadInterstitial(); }
+                    @Override public void onAdFailedToShowFullScreenContent(AdError error) { interstitialAd = null; loadInterstitial(); }
                 });
+            }
+            @Override public void onAdFailedToLoad(LoadAdError error) { interstitialAd = null; }
+        });
     }
 
     private void loadRewarded() {
         if (!adsReady || isFinishing()) return;
-        RewardedAd.load(this, rewardedId(), new AdRequest.Builder().build(),
-                new RewardedAdLoadCallback() {
-                    @Override public void onAdLoaded(RewardedAd ad) {
-                        rewardedAd = ad;
-                        rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override public void onAdDismissedFullScreenContent() {
-                                rewardedAd = null;
-                                loadRewarded();
-                            }
-                            @Override public void onAdFailedToShowFullScreenContent(AdError error) {
-                                rewardedAd = null;
-                                loadRewarded();
-                            }
-                        });
-                    }
-                    @Override public void onAdFailedToLoad(LoadAdError error) {
-                        rewardedAd = null;
-                    }
+        RewardedAd.load(this, rewardedId(), new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
+            @Override public void onAdLoaded(RewardedAd ad) {
+                rewardedAd = ad;
+                rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override public void onAdDismissedFullScreenContent() { rewardedAd = null; loadRewarded(); }
+                    @Override public void onAdFailedToShowFullScreenContent(AdError error) { rewardedAd = null; loadRewarded(); }
                 });
+            }
+            @Override public void onAdFailedToLoad(LoadAdError error) { rewardedAd = null; }
+        });
     }
 
     private void showInterstitialAtBreak() {
@@ -146,20 +124,13 @@ public class MainActivity extends Activity {
         RewardedAd ad = rewardedAd;
         rewardedAd = null;
         ad.show(this, (RewardItem reward) -> {
-            if (gameView != null) {
-                gameView.evaluateJavascript(
-                        "window.onNativeRewarded && window.onNativeRewarded();", null);
-            }
+            if (gameView != null) gameView.evaluateJavascript("window.onNativeRewarded && window.onNativeRewarded();", null);
         });
     }
 
     private class GameAdsBridge {
-        @JavascriptInterface public void showInterstitial() {
-            runOnUiThread(() -> showInterstitialAtBreak());
-        }
-        @JavascriptInterface public void showRewarded() {
-            runOnUiThread(() -> showRewardedForBonus());
-        }
+        @JavascriptInterface public void showInterstitial() { runOnUiThread(() -> showInterstitialAtBreak()); }
+        @JavascriptInterface public void showRewarded() { runOnUiThread(() -> showRewardedForBonus()); }
     }
 
     @Override protected void onPause() {
@@ -172,6 +143,7 @@ public class MainActivity extends Activity {
         super.onResume();
         if (bannerAd != null) bannerAd.resume();
         if (gameView != null) gameView.onResume();
+        UpdateManager.resumeInstall(this);
     }
 
     @Override public void onBackPressed() {
@@ -180,6 +152,7 @@ public class MainActivity extends Activity {
     }
 
     @Override protected void onDestroy() {
+        UpdateManager.unregister(this);
         if (bannerAd != null) { bannerAd.destroy(); bannerAd = null; }
         if (gameView != null) { gameView.destroy(); gameView = null; }
         super.onDestroy();
