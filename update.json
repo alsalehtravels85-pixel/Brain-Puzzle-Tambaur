@@ -1,6 +1,6 @@
 {
-  "versionCode": 3,
-  "versionName": "1.2",
+  "versionCode": 2,
+  "versionName": "1.1",
   "apkUrl": "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk",
-  "releaseNotes": "Improved update support and app maintenance. Game design and gameplay are preserved."
+  "releaseNotes": "A signed update will be published after the permanent app signing key is configured."
 }
