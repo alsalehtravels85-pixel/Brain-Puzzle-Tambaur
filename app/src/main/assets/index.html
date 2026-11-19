@@ -150,24 +150,3 @@ document.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>{b.classList
 init();requestAnimationFrame(frame);
 })();
 </script></body></html>
-<style>
-/* Full-screen phone layout: use every pixel for the game board. */
-html,body{overflow:hidden!important}
-.app{max-width:720px!important;height:100dvh!important;min-height:0!important;padding:7px 9px 8px!important;gap:6px!important}
-.top{flex:none!important;padding:8px 11px!important}
-.logo{width:37px!important;height:37px!important}
-h1{flex:none!important;font-size:clamp(23px,6vw,34px)!important}
-.subtitle{flex:none!important;font-size:11px!important;margin-top:-4px!important}
-.stats{flex:none!important;gap:6px!important}
-.stat{padding:5px 4px!important}
-.stat b{font-size:18px!important}
-.stage{flex:1 1 auto!important;min-height:0!important;padding:5px!important;border-radius:23px!important}
-.stage canvas{width:100%!important;height:100%!important;min-height:0!important;display:block!important}
-.boosters{flex:none!important;margin:3px auto!important;gap:18px!important}
-.boost.iconBoost{width:55px!important;height:55px!important;border-radius:17px!important}
-.powerIcon{font-size:26px!important}
-.controls{flex:none!important;gap:6px!important}
-.action{padding:7px 4px!important;font-size:10px!important}
-.tip,.footer{display:none!important}
-@media(max-height:720px){.top{padding:5px 9px!important}.logo{width:31px!important;height:31px!important}.stats .stat{padding:3px!important}.boost.iconBoost{width:46px!important;height:46px!important}.powerIcon{font-size:22px!important}.controls{display:none!important}}
-</style>
