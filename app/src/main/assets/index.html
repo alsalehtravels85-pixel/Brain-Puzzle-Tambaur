@@ -50,6 +50,31 @@ canvas{background:radial-gradient(ellipse at 50% 10%,#214d79,#102b50 58%,#091b35
 .action,.round{background:linear-gradient(145deg,#315a87,#172b4e)!important;border-color:#9bdcff66!important}
 .action.hot{background:linear-gradient(110deg,#fbbf24,#fb7185)!important;color:#20122c!important}
 .footer{color:#9ab4dc!important}
+
+/* Ad-safe viewport: WebView is shorter when the anchored AdMob banner is visible.
+   Size the game to the actual WebView area, never the full physical screen. */
+html,body{width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important}
+body{height:100%!important;min-height:0!important}
+.app{height:100%!important;min-height:0!important;max-height:100%!important;overflow:hidden!important;padding:5px 8px 7px!important;gap:5px!important}
+.top{flex:0 0 auto!important}
+.gameHeading{flex:0 0 auto!important}
+.stage{flex:1 1 0!important;min-height:0!important}
+.stage canvas{height:100%!important;min-height:0!important;max-height:100%!important}
+.boosters{flex:0 0 auto!important;padding-bottom:2px!important}
+@media(max-height:760px){
+ .app{gap:4px!important;padding:3px 7px 5px!important}
+ .top{min-height:42px!important;padding:3px 8px!important}
+ .logo{width:30px!important;height:30px!important}
+ .round{width:32px!important;height:32px!important}
+ .gameHeading{gap:2px!important}
+ .gameHeading h1{font-size:18px!important}
+ .gameHeading .subtitle{font-size:9px!important}
+ .gameHeading .stat{min-height:32px!important;padding:2px!important}
+ .gameHeading .stat b{font-size:14px!important}
+ .boost.iconBoost{width:43px!important;height:43px!important}
+ .powerIcon{font-size:21px!important}
+}
+/* Richer, deeper bubble colours while preserving glossy highlights */
 </style> 
 <style>
 /* Reference-style portrait arcade layout: slim brand bar, large sky-blue playfield, boosters and preserved ad slot. */
@@ -110,8 +135,8 @@ h1{font-size:19px!important;line-height:1!important;margin:0!important}
 (()=> {
 const c=document.getElementById('game'),ctx=c.getContext('2d'),$=id=>document.getElementById(id);
 const W=480,H=610,R=18,DX=36,DY=32,LEFT=24,TOP=24,ROWS=13,COLS=12;
-const colors=['#e91e4f','#e6a900','#087fb8','#238c35','#6427b8','#d94b12'];
-const bright=['#ff6688','#ffd84a','#43caff','#62d96a','#a77aff','#ff8548'];
+const colors=['#a90035','#a96a00','#00558f','#126020','#45108f','#a83208'];
+const bright=['#ff527c','#ffc928','#26baff','#39c957','#9255ff','#ff7138'];
 let grid=[],score=0,best=+(localStorage.getItem('tbsBest')||0),level=+(localStorage.getItem('tbsLevel')||1),shots=0,cur=0,next=1,aim={x:240,y:250},drag=false,paused=false,over=false,won=false,sound=true,music=false,vibration=true,anim=[],particles=[],flight=null,swapFlight=null,last=0,activePower='',powerBag={bomb:3,rainbow:3,lightning:2},musicCtx=null,musicTimer=null,musicStep=0;
 $('best').textContent=best;
 function center(r,col){return {x:LEFT+R+(col*DX)+(r%2?DX/2:0),y:TOP+R+r*DY}}
