@@ -75,6 +75,17 @@ body{height:100%!important;min-height:0!important}
  .powerIcon{font-size:21px!important}
 }
 /* Richer, deeper bubble colours while preserving glossy highlights */
+
+/* Compact SCORE / BEST / LEVEL HUD cards */
+.gameHeading .stats{gap:5px!important}
+.gameHeading .stat{min-height:34px!important;height:34px!important;padding:2px 3px!important;border-radius:12px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:0!important}
+.gameHeading .stat label{font-size:7px!important;line-height:1!important;letter-spacing:1px!important}
+.gameHeading .stat b{font-size:15px!important;line-height:1.05!important}
+@media(max-height:720px){
+ .gameHeading .stat{min-height:30px!important;height:30px!important;padding:1px 2px!important}
+ .gameHeading .stat label{font-size:6px!important}
+ .gameHeading .stat b{font-size:13px!important}
+}
 </style> 
 <style>
 /* Reference-style portrait arcade layout: slim brand bar, large sky-blue playfield, boosters and preserved ad slot. */
