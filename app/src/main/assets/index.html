@@ -50,7 +50,31 @@ canvas{background:radial-gradient(ellipse at 50% 10%,#214d79,#102b50 58%,#091b35
 .action,.round{background:linear-gradient(145deg,#315a87,#172b4e)!important;border-color:#9bdcff66!important}
 .action.hot{background:linear-gradient(110deg,#fbbf24,#fb7185)!important;color:#20122c!important}
 .footer{color:#9ab4dc!important}
-</style></head><body>
+</style> 
+/* Reference-style portrait arcade layout: slim brand bar, large sky-blue playfield, boosters and preserved ad slot. */
+html,body{height:100%;overflow:hidden!important}
+body{background:linear-gradient(180deg,#071326,#0b1b35)!important}
+.app{height:100dvh!important;max-width:720px!important;padding:5px 8px 7px!important;gap:5px!important}
+.top{flex:none!important;padding:5px 9px!important;min-height:48px!important;border-radius:14px!important}
+.logo{width:34px!important;height:34px!important}
+.brand{font-size:11px!important;letter-spacing:1px!important}
+.brand small{font-size:8px!important}
+.round{width:36px!important;height:36px!important;border-radius:12px!important}
+h1{font-size:19px!important;line-height:1!important;margin:0!important}
+.subtitle{font-size:9px!important;margin:0!important}
+.stats{gap:5px!important}
+.stat{padding:3px!important;border-radius:10px!important}
+.stat label{font-size:8px!important}
+.stat b{font-size:15px!important}
+.stage{flex:1 1 auto!important;min-height:0!important;padding:4px!important;border-radius:17px!important;background:linear-gradient(145deg,#d7f4ff,#68c9fa)!important;border:2px solid #c5efff!important}
+.stage canvas{display:block!important;width:100%!important;height:100%!important;min-height:0!important;flex:1!important;border-radius:12px!important;background:#72d0ff!important}
+.boosters{flex:none!important;margin:2px auto!important;gap:16px!important}
+.boost.iconBoost{width:52px!important;height:52px!important;border-radius:15px!important}
+.powerIcon{font-size:25px!important}
+.controls{display:none!important}
+.tip,.footer{display:none!important}
+@media(max-height:720px){.top{min-height:42px!important;padding:3px 7px!important}.logo{width:29px!important;height:29px!important}.round{width:32px!important;height:32px!important}.stats .stat{padding:2px!important}.boost.iconBoost{width:44px!important;height:44px!important}.powerIcon{font-size:21px!important}}
+</head><body>
 <main class="app">
 <header class="top"><div class="brand"><svg class="logo" viewBox="0 0 100 100" aria-label="Tambaur Arcade logo"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#67e8f9"/><stop offset=".48" stop-color="#818cf8"/><stop offset="1" stop-color="#f0abfc"/></linearGradient><radialGradient id="orb"><stop stop-color="#fff"/><stop offset=".35" stop-color="#a5f3fc"/><stop offset="1" stop-color="#0891b2"/></radialGradient></defs><path d="M50 3 91 26v48L50 97 9 74V26Z" fill="#101b3a" stroke="url(#lg)" stroke-width="5"/><path d="M50 13 82 31v38L50 87 18 69V31Z" fill="#172b52" stroke="#ffffff35" stroke-width="2"/><circle cx="36" cy="39" r="13" fill="#fb7185" stroke="#fff9" stroke-width="2"/><circle cx="65" cy="39" r="13" fill="url(#orb)" stroke="#fff9" stroke-width="2"/><circle cx="50" cy="65" r="14" fill="#facc15" stroke="#fff9" stroke-width="2"/><path d="m27 78 23 9 23-9" fill="none" stroke="#c4b5fd" stroke-width="3" stroke-linecap="round"/></svg><div>TAMBAUR ARCADE<small>BUBBLE SHOOTER</small></div></div><div class="topBtns"><button class="round" id="sound" aria-label="Sound">♫</button><button class="round" id="settings" aria-label="Settings">⚙</button></div></header>
 <h1> BUBBLE <span>SHOOTER</span></h1><div class="subtitle">Aim • Match • Blast • Level Up!</div>
@@ -79,24 +103,11 @@ function update(){ $('score').textContent=score;$('best').textContent=best;$('le
 function startMusic(){if(!music||musicTimer)return;try{musicCtx=musicCtx||new(window.AudioContext||window.webkitAudioContext)();musicCtx.resume();const notes=[261.63,329.63,392,493.88,392,329.63,293.66,349.23];musicTimer=setInterval(()=>{if(!music||!musicCtx)return;let o=musicCtx.createOscillator(),g=musicCtx.createGain(),t=musicCtx.currentTime;o.type='sine';o.frequency.value=notes[musicStep++%notes.length];g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.055,t+.08);g.gain.exponentialRampToValueAtTime(.0001,t+.65);o.connect(g);g.connect(musicCtx.destination);o.start(t);o.stop(t+.7)},420)}catch(e){}}function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null}}function soundPop(){if(!sound)return;try{let ac=new(window.AudioContext||window.webkitAudioContext)();[[620,.11,.13,'sine'],[240,.08,.19,'triangle'],[1050,.035,.07,'sine']].forEach(([hz,vol,dur,type],i)=>{let o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(hz,ac.currentTime+i*.012);o.frequency.exponentialRampToValueAtTime(Math.max(70,hz*.32),ac.currentTime+dur);g.gain.setValueAtTime(vol,ac.currentTime+i*.012);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);o.connect(g);g.connect(ac.destination);o.start(ac.currentTime+i*.012);o.stop(ac.currentTime+dur+.02)});setTimeout(()=>ac.close(),400)}catch(e){}}
 function bubble(x,y,color,rad=R){let g=ctx.createRadialGradient(x-rad*.38,y-rad*.43,1,x,y,rad*1.12);g.addColorStop(0,'#ffffff');g.addColorStop(.13,'#ffffffed');g.addColorStop(.27,bright[color]+'ee');g.addColorStop(.56,colors[color]+'e8');g.addColorStop(.82,colors[color]+'88');g.addColorStop(1,'#071c38cc');ctx.save();ctx.shadowColor=bright[color];ctx.shadowBlur=rad*.48;ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rad,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#e7fbffdd';ctx.lineWidth=Math.max(1,rad*.075);ctx.stroke();ctx.save();ctx.beginPath();ctx.arc(x,y,rad*.9,0,Math.PI*2);ctx.clip();let glass=ctx.createLinearGradient(x-rad,y-rad,x+rad,y+rad);glass.addColorStop(0,'#ffffff66');glass.addColorStop(.35,'#ffffff05');glass.addColorStop(.72,'#9beaff18');glass.addColorStop(1,'#001b3d66');ctx.fillStyle=glass;ctx.fillRect(x-rad,y-rad,rad*2,rad*2);ctx.strokeStyle='#ffffffa8';ctx.lineWidth=Math.max(1,rad*.055);ctx.beginPath();ctx.arc(x-rad*.12,y-rad*.12,rad*.72,-2.5,.65);ctx.stroke();ctx.restore();ctx.fillStyle='#ffffffed';ctx.beginPath();ctx.ellipse(x-rad*.34,y-rad*.42,rad*.25,rad*.13,-.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ffffffb8';ctx.beginPath();ctx.arc(x+rad*.39,y+rad*.34,Math.max(1.4,rad*.08),0,Math.PI*2);ctx.fill();ctx.restore()}
 function draw(){ctx.clearRect(0,0,W,H);
-// Realistic alpine lake scene: atmospheric sky, sun haze, detailed mountain layers and water reflections.
-let sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#8bc9df');sky.addColorStop(.24,'#d5e8e4');sky.addColorStop(.48,'#83b9bd');sky.addColorStop(.72,'#397b83');sky.addColorStop(1,'#102f43');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
-let sun=ctx.createRadialGradient(345,88,5,345,88,115);sun.addColorStop(0,'rgba(255,245,210,.72)');sun.addColorStop(.28,'rgba(255,235,190,.23)');sun.addColorStop(1,'rgba(255,235,190,0)');ctx.fillStyle=sun;ctx.fillRect(210,0,270,230);
-function ridge(points,fill){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fillStyle=fill;ctx.fill()}
-ridge([[0,220],[38,162],[78,190],[132,95],[168,148],[222,67],[270,151],[327,83],[372,155],[428,91],[480,168]],'#8caeb2');
-ridge([[0,250],[58,176],[100,214],[157,127],[205,194],[260,116],[318,201],[370,139],[422,205],[480,151]],'#557f88');
-ridge([[0,294],[48,236],[92,266],[148,195],[201,262],[252,190],[310,268],[365,210],[425,278],[480,222]],'#315c69');
-// snow and sunlit rock faces
-ctx.fillStyle='rgba(238,247,235,.72)';ctx.beginPath();ctx.moveTo(111,132);ctx.lineTo(132,95);ctx.lineTo(151,128);ctx.lineTo(137,119);ctx.lineTo(128,137);ctx.closePath();ctx.fill();
-ctx.beginPath();ctx.moveTo(201,96);ctx.lineTo(222,67);ctx.lineTo(244,109);ctx.lineTo(226,96);ctx.lineTo(217,111);ctx.closePath();ctx.fill();
-ctx.beginPath();ctx.moveTo(308,111);ctx.lineTo(327,83);ctx.lineTo(347,119);ctx.lineTo(331,107);ctx.closePath();ctx.fill();
-// forested shoreline
-ridge([[0,365],[22,326],[40,365],[60,312],[81,367],[105,322],[128,371],[151,315],[177,372],[203,330],[229,374],[256,320],[282,372],[310,326],[338,374],[365,317],[392,372],[420,329],[447,370],[470,322],[480,350]],'#183f4c');
-// lake surface and mountain reflections
-let lake=ctx.createLinearGradient(0,360,0,610);lake.addColorStop(0,'#397e88');lake.addColorStop(.22,'#286b79');lake.addColorStop(.58,'#164b61');lake.addColorStop(1,'#0b2b43');ctx.fillStyle=lake;ctx.fillRect(0,360,W,250);
-ctx.save();ctx.globalAlpha=.20;ctx.fillStyle='#b6d9d3';ctx.beginPath();ctx.moveTo(0,365);ctx.lineTo(70,385);ctx.lineTo(130,368);ctx.lineTo(205,399);ctx.lineTo(270,370);ctx.lineTo(350,397);ctx.lineTo(430,368);ctx.lineTo(480,384);ctx.lineTo(480,440);ctx.lineTo(0,440);ctx.closePath();ctx.fill();ctx.restore();
-for(let i=0;i<29;i++){let y=390+i*7,x=(i*67+13)%W,len=22+(i%5)*19;ctx.strokeStyle='rgba(205,235,226,'+(0.07+(i%4)*.035)+')';ctx.lineWidth=i%6===0?2:1;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x+len*.45,y-2,x+len,y);ctx.stroke()}
-ctx.save();ctx.globalAlpha=.22;ctx.fillStyle='#082b36';for(let i=0;i<13;i++){let x=i*42-5,h=35+(i%4)*12;ctx.beginPath();ctx.moveTo(x,350);ctx.lineTo(x-15,350+h);ctx.lineTo(x+15,350+h);ctx.closePath();ctx.fill()}ctx.restore();
+// Bright arcade-sky playfield inspired by the reference layout.
+let sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#42b9f5');sky.addColorStop(.48,'#72d0ff');sky.addColorStop(1,'#8edfff');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+let glow=ctx.createRadialGradient(355,70,5,355,70,190);glow.addColorStop(0,'rgba(255,255,255,.42)');glow.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=glow;ctx.fillRect(160,0,320,260);
+for(let i=0;i<5;i++){let x=30+i*105,y=105+(i%2)*80;ctx.fillStyle='rgba(255,255,255,.12)';ctx.beginPath();ctx.ellipse(x,y,35,7,0,0,Math.PI*2);ctx.fill()}
+ctx.fillStyle='rgba(255,255,255,.18)';ctx.fillRect(0,0,W,3);
 ctx.save();ctx.shadowColor='#67e8f9';ctx.shadowBlur=14;ctx.strokeStyle='rgba(147,197,253,.24)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(12,TOP+7*DY+10);ctx.lineTo(W-12,TOP+7*DY+10);ctx.stroke();ctx.restore();
 for(let r=0;r<ROWS;r++)for(let col=0;col<COLS;col++){let v=grid[r][col];if(v>=0){let p=center(r,col);bubble(p.x,p.y,v)}}
 for(const p of particles){ctx.globalAlpha=Math.max(0,p.life);if(p.ring){ctx.strokeStyle=p.color;ctx.lineWidth=Math.max(1,p.width||2);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.stroke()}else if(p.smoke){let g=ctx.createRadialGradient(p.x,p.y,1,p.x,p.y,p.r);g.addColorStop(0,p.color);g.addColorStop(1,'rgba(125,145,190,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}else{ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
