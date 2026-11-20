@@ -13,6 +13,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -37,6 +39,8 @@ public final class UpdateManager {
     private static Context appContext;
     private static boolean receiverRegistered;
     private static boolean installerLaunching;
+    private static final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private static int monitorAttempts;
 
     // Keep a strong reference: a locally-created receiver can be garbage-collected
     // before DownloadManager sends ACTION_DOWNLOAD_COMPLETE.
@@ -165,11 +169,42 @@ public final class UpdateManager {
             activity.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
                     .putLong(KEY_DOWNLOAD_ID, id).putBoolean(KEY_INSTALL_PENDING, false).apply();
             Toast.makeText(activity, "Update downloading. Installer will open automatically when ready.", Toast.LENGTH_LONG).show();
+            startDownloadMonitor(activity, id);
         } catch (Exception e) {
             Toast.makeText(activity, "Update could not start. Please try again.", Toast.LENGTH_LONG).show();
         }
     }
 
+    // Poll DownloadManager while the game is visible as a fallback for delayed broadcasts.
+    private static void startDownloadMonitor(Activity activity, long id) {
+        monitorAttempts = 0;
+        mainHandler.removeCallbacksAndMessages(null);
+        mainHandler.post(new Runnable() {
+            @Override public void run() {
+                if (activity.isFinishing()) return;
+                monitorAttempts++;
+                try {
+                    DownloadManager manager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+                    try (Cursor cursor = manager.query(new DownloadManager.Query().setFilterById(id))) {
+                        if (cursor != null && cursor.moveToFirst()) {
+                            int status = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_STATUS));
+                            if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                                activity.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_INSTALL_PENDING, true).apply();
+                                resumeInstall(activity);
+                                return;
+                            }
+                            if (status == DownloadManager.STATUS_FAILED) {
+                                int reason = cursor.getInt(cursor.getColumnIndexOrThrow(DownloadManager.COLUMN_REASON));
+                                Toast.makeText(activity, "Update download failed (" + reason + "). Please try again.", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        }
+                    }
+                } catch (Exception ignored) { }
+                if (monitorAttempts < 1800) mainHandler.postDelayed(this, 1000L);
+            }
+        });
+    }
     public static void resumeInstall(Activity activity) {
         currentActivity = activity;
         appContext = activity.getApplicationContext();
@@ -220,10 +255,10 @@ public final class UpdateManager {
 
     private static void openInstaller(Activity activity, File apk) throws Exception {
         Uri uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", apk);
-        Intent install = new Intent(Intent.ACTION_VIEW);
-        install.setDataAndType(uri, "application/vnd.android.package-archive");
+        Intent install = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+        install.setData(uri);
+        install.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
         install.setClipData(ClipData.newRawUri("Tambaur Bubble Shooter update", uri));
-        install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
         installerLaunching = true;
         activity.startActivity(install);
     }
