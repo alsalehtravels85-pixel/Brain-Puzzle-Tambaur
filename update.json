@@ -1,6 +1,6 @@
 {
-  "versionCode": 7,
-  "versionName": "1.6",
+  "versionCode": 8,
+  "versionName": "1.7",
   "apkUrl": "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk",
-  "releaseNotes": "Tambaur Bubble Shooter 1.6: safer update flow; no app-side APK installation permission. AdMob and game layout retained."
+  "releaseNotes": "Tambaur Bubble Shooter 1.7: corrected game viewport CSS placement; restored clean game display above the AdMob banner."
 }
