@@ -1,6 +1,6 @@
 {
-  "versionCode": 12,
-  "versionName": "2.1",
+  "versionCode": 13,
+  "versionName": "2.2",
   "apkUrl": "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk",
-  "releaseNotes": "Version 2.1: direct in-app update download. Tap UPDATE NOW; the APK downloads and Android's installer opens automatically. AdMob unchanged."
+  "releaseNotes": "Version 2.2: fixed game startup so bubbles and gameplay render correctly; vivid animated colour controls with readable BOMB, RAINBOW and LIGHTNING labels. AdMob unchanged."
 }
