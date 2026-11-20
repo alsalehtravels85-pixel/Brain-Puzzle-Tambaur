@@ -1,6 +1,6 @@
 {
-  "versionCode": 17,
-  "versionName": "2.7",
+  "versionCode": 18,
+  "versionName": "2.8",
   "apkUrl": "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk",
-  "releaseNotes": "Version 2.7: added a clearly labelled SHARE button and colourful animated arcade typography across the game. Garden scenery and gameplay retained."
+  "releaseNotes": "Version 2.8: fixed automatic installer launch after update download; app now checks completed downloads and opens Android package installer. Android install confirmation is still required."
 }
