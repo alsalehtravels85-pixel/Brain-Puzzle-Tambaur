@@ -167,6 +167,7 @@ public class MainActivity extends Activity {
         super.onResume();
         if (bannerAd != null) bannerAd.resume();
         if (gameView != null) gameView.onResume();
+        UpdateManager.resumeInstall(this);
     }
 
     @Override public void onBackPressed() {
