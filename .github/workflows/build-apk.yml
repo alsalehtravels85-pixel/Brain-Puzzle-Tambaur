@@ -24,6 +24,17 @@ jobs:
           accept-android-sdk-licenses: true
           packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
       - uses: gradle/actions/setup-gradle@v4
+      - name: Validate game JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          html = Path('app/src/main/assets/index.html').read_text()
+          scripts = re.findall(r'<script>(.*?)</script>', html, re.S)
+          assert scripts, 'No game script found'
+          Path('/tmp/game-check.js').write_text(scripts[0])
+          PY
+          node --check /tmp/game-check.js
       - name: Build debug APK
         run: gradle assembleDebug
       - name: Upload debug APK
@@ -50,8 +61,8 @@ jobs:
       - name: Create GitHub release with signed APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v2.4
-          name: Tambaur Bubble Shooter 2.4
+          tag_name: v2.5
+          name: Tambaur Bubble Shooter 2.5
           target_commitish: main
           generate_release_notes: true
           files: app/build/outputs/apk/release/app-release.apk
@@ -62,4 +73,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cp app/build/outputs/apk/release/app-release.apk TambaurBubbleShooter.apk
-          gh release upload v2.4 TambaurBubbleShooter.apk --clobber
+          gh release upload v2.5 TambaurBubbleShooter.apk --clobber
