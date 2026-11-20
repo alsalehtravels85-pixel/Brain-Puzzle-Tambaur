@@ -182,6 +182,21 @@ body { height:100%; min-height:0; }
 @media(max-height:650px){.slideRail{gap:5px;padding:6px}.slideRail button{min-height:36px}.sideHandle{height:50px}}
 
 @keyframes railGlow{0%,100%{box-shadow:0 12px 28px #020617bb,0 0 8px #38bdf855}50%{box-shadow:0 12px 28px #020617bb,0 0 22px #e879f988}} @keyframes handlePulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}} @keyframes railColor{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}} .slideRail{animation:railGlow 2.8s ease-in-out infinite}.slideRail button{background:linear-gradient(120deg,#2563eb,#7c3aed,#db2777);background-size:200% 200%;animation:railColor 5s ease infinite}.sideHandle{animation:handlePulse 2s ease-in-out infinite}
+
+/* Version 2.2: visible, vivid arcade controls and readable labels */
+.boost.iconBoost{width:94px!important;height:76px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:1px!important;border-radius:19px!important;background:linear-gradient(145deg,#ff4d8d,#8b35d6 55%,#2858d8)!important;border:2px solid #d9f7ff!important;box-shadow:0 6px 0 #14234d,0 0 20px #e879f988,inset 0 2px 8px #fff8!important;position:relative!important;animation:boosterFloat 2.4s ease-in-out infinite}
+.boost.iconBoost:nth-child(2){background:linear-gradient(145deg,#14b8a6,#2563eb 55%,#9333ea)!important;animation-delay:.25s}
+.boost.iconBoost:nth-child(3){background:linear-gradient(145deg,#facc15,#f97316 55%,#dc2626)!important;animation-delay:.5s}
+.powerIcon{font-size:29px!important;line-height:1!important;filter:drop-shadow(0 3px 4px #1119)}
+.boost.iconBoost .powerLabel{display:block!important;color:#fff!important;font-size:9px!important;font-weight:1000!important;letter-spacing:.8px!important;text-shadow:0 1px 3px #111!important}
+.boost.iconBoost small{right:-5px!important;top:-7px!important}
+.round{background:linear-gradient(145deg,#2563eb,#7c3aed 55%,#db2777)!important;border:1px solid #c4f1ff!important;box-shadow:0 4px 0 #101d43,0 0 15px #60a5fa77!important}
+.sideHandle{background:linear-gradient(145deg,#06b6d4,#4f46e5,#db2777)!important;border:2px solid #fff!important;box-shadow:0 0 20px #22d3ee!important}
+.slideRail{background:linear-gradient(145deg,#092e62f7,#4c1d95f7,#831843f7)!important;border:2px solid #a5f3fc!important}
+.slideRail button{min-height:47px!important;background:linear-gradient(110deg,#0ea5e9,#6366f1,#d946ef)!important;border:1px solid #fff9!important;font-size:20px!important}
+.slideRail button span{font-size:12px!important;font-weight:900!important;color:white!important}
+@keyframes boosterFloat{0%,100%{transform:translateY(0);filter:saturate(1)}50%{transform:translateY(-4px);filter:saturate(1.35) brightness(1.12)}}
+@media(max-height:740px){.boost.iconBoost{width:82px!important;height:65px!important}.powerIcon{font-size:25px!important}.boost.iconBoost .powerLabel{font-size:8px!important}}
 </style>
 </head><body>
 <main class="app">
@@ -205,7 +220,7 @@ body { height:100%; min-height:0; }
 <button data-side="aim">🎯 <span>Aim guide</span></button>
 <button data-side="pause">Ⅱ <span>Pause</span></button>
 </aside></section>
-<section class="boosters"><button class="boost iconBoost" data-power="bomb" aria-label="Bomb"><span class="powerIcon">💣</span><small id="bombCount">3</small></button><button class="boost iconBoost" data-power="rainbow" aria-label="Rainbow"><span class="powerIcon">🌈</span><small id="rainbowCount">3</small></button><button class="boost iconBoost" data-power="lightning" aria-label="Lightning"><span class="powerIcon">⚡</span><small id="lightningCount">2</small></button></section>
+<section class="boosters"><button class="boost iconBoost" data-power="bomb" aria-label="Bomb"><span class="powerIcon">💣</span><span class="powerLabel">BOMB</span><small id="bombCount">3</small></button><button class="boost iconBoost" data-power="rainbow" aria-label="Rainbow"><span class="powerIcon">🌈</span><span class="powerLabel">RAINBOW</span><small id="rainbowCount">3</small></button><button class="boost iconBoost" data-power="lightning" aria-label="Lightning"><span class="powerIcon">⚡</span><span class="powerLabel">LIGHTNING</span><small id="lightningCount">2</small></button></section>
 <section class="controls"><button class="action" id="restart">↻ RESTART</button><button class="action hot" id="pause">Ⅱ PAUSE</button><button class="action" id="help">✦ HOW TO PLAY</button></section>
 <p class="tip">Drag to aim • Release to shoot • Match 3+ bubbles to blast!</p>
 <div class="footer">MADE WITH ♥ IN TAMBAUR • PLAY OFFLINE</div>
