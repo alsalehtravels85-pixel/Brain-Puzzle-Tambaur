@@ -1,6 +1,6 @@
 {
-  "versionCode": 15,
-  "versionName": "2.5",
+  "versionCode": 16,
+  "versionName": "2.6",
   "apkUrl": "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk",
-  "releaseNotes": "Version 2.5: fixed JavaScript startup syntax so the game board renders; animated garden background, bubbles and gameplay restored. APK download now opens Android's installer automatically when complete. Android confirmation is still required."
+  "releaseNotes": "Version 2.6: fixed older Android WebView canvas compatibility that could leave the playfield blank; restored bubble rendering and animated garden scenery. Update download opens Android installer when permitted; final Android confirmation is required."
 }
