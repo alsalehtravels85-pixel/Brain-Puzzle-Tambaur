@@ -1,6 +1,6 @@
 {
-  "versionCode": 20,
-  "versionName": "3.0",
+  "versionCode": 21,
+  "versionName": "3.1",
   "apkUrl": "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk",
-  "releaseNotes": "Version 3.0: fixed the share link to use the working official APK release URL; improved AdMob banner sizing, visibility, retry handling and diagnostics. Android install confirmation is still required."
+  "releaseNotes": "Version 3.1: smoother gameplay performance, fewer redundant canvas redraws, optimized bubble rendering, faster aiming calculations and lighter burst particles while preserving the colourful garden design."
 }
