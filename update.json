@@ -1,6 +1,6 @@
 {
-  "versionCode": 13,
-  "versionName": "2.3",
+  "versionCode": 14,
+  "versionName": "2.4",
   "apkUrl": "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk",
-  "releaseNotes": "Version 2.3: fixed JavaScript startup syntax so the bubble board and gameplay render correctly. Colorful animated controls retained."
+  "releaseNotes": "Version 2.4: fully animated garden background with rolling hills, swaying trees and flowers, drifting butterflies and leaves. Gameplay remains in foreground."
 }
