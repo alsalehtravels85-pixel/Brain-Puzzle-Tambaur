@@ -50,8 +50,8 @@ jobs:
       - name: Create GitHub release with signed APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.4
-          name: Tambaur Bubble Shooter 1.4
+          tag_name: v1.5
+          name: Tambaur Bubble Shooter 1.5
           target_commitish: main
           generate_release_notes: true
           files: app/build/outputs/apk/release/app-release.apk
@@ -62,4 +62,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cp app/build/outputs/apk/release/app-release.apk TambaurBubbleShooter.apk
-          gh release upload v1.4 TambaurBubbleShooter.apk --clobber
+          gh release upload v1.5 TambaurBubbleShooter.apk --clobber
