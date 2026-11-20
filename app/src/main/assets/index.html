@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#080d2b"><title>Tambaur Bubble Shooter</title>
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#fff;background:#071d1b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;min-height:100%;font-family:"Trebuchet MS", "Arial Rounded MT Bold", "Segoe UI", sans-serif;color:#fff;background:#071d1b}
 body{height:100dvh;min-height:100dvh;background:radial-gradient(ellipse at 12% 0%,#14665a 0,transparent 42%),radial-gradient(ellipse at 95% 35%,#174c58 0,transparent 40%),linear-gradient(160deg,#061b1a,#0b302d 55%,#071b20);display:flex;justify-content:center;overflow-x:hidden}
 .app{width:100%;max-width:720px;height:100dvh;min-height:0;padding:8px 10px 10px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
 .top{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -109,6 +109,18 @@ body{height:100%!important;min-height:0!important}
  .gameHeading .stat label{font-size:5.5px!important}
  .gameHeading .stat b{font-size:12px!important}
 }
+
+/* Version 2.7: labelled share control + colourful, rounded arcade typography */
+#shareApp{width:auto!important;min-width:68px!important;height:36px!important;padding:0 8px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;font-size:15px!important;white-space:nowrap!important}
+#shareApp span{font-family:"Trebuchet MS","Segoe UI",sans-serif!important;font-size:8px!important;font-weight:1000!important;letter-spacing:1px!important;color:#fff!important;text-shadow:0 1px 5px #f0abfc!important}
+body,.app,button,.panel,.stat,.brand,.subtitle,.tip,.footer{font-family:"Trebuchet MS","Arial Rounded MT Bold","Segoe UI",sans-serif!important}
+h1,.brand,.stat label,.stat b,.panel h2,.setting,.boost .powerLabel,.slideRail button span{font-family:"Trebuchet MS","Arial Rounded MT Bold","Segoe UI",sans-serif!important}
+h1{background:linear-gradient(90deg,#fff,#a5f3fc 25%,#f0abfc 55%,#fde68a 85%,#fff);background-size:220% auto;background-clip:text;-webkit-background-clip:text;color:transparent!important;animation:arcadeTypeGlow 5s linear infinite;text-shadow:0 0 18px #60a5fa55!important}
+h1 span{background:linear-gradient(90deg,#fde047,#fb7185,#c084fc,#67e8f9);background-size:220% auto;background-clip:text;-webkit-background-clip:text;color:transparent!important}
+.stat label{color:#a5f3fc!important;text-shadow:0 0 8px #22d3ee66!important}
+.stat b{background:linear-gradient(90deg,#fff,#fde68a,#f0abfc);background-clip:text;-webkit-background-clip:text;color:transparent!important}
+.boost.iconBoost .powerLabel,.slideRail button span{letter-spacing:1px!important;text-shadow:0 1px 4px #020617!important}
+@keyframes arcadeTypeGlow{to{background-position:220% center}}
 </style> 
 <style>
 /* Reference-style portrait arcade layout: slim brand bar, large sky-blue playfield, boosters and preserved ad slot. */
@@ -200,7 +212,7 @@ body { height:100%; min-height:0; }
 </style>
 </head><body>
 <main class="app">
-<header class="top"><div class="brand"><svg class="logo" viewBox="0 0 100 100" aria-label="Tambaur Arcade logo"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#67e8f9"/><stop offset=".48" stop-color="#818cf8"/><stop offset="1" stop-color="#f0abfc"/></linearGradient><radialGradient id="orb"><stop stop-color="#fff"/><stop offset=".35" stop-color="#a5f3fc"/><stop offset="1" stop-color="#0891b2"/></radialGradient></defs><path d="M50 3 91 26v48L50 97 9 74V26Z" fill="#101b3a" stroke="url(#lg)" stroke-width="5"/><path d="M50 13 82 31v38L50 87 18 69V31Z" fill="#172b52" stroke="#ffffff35" stroke-width="2"/><circle cx="36" cy="39" r="13" fill="#fb7185" stroke="#fff9" stroke-width="2"/><circle cx="65" cy="39" r="13" fill="url(#orb)" stroke="#fff9" stroke-width="2"/><circle cx="50" cy="65" r="14" fill="#facc15" stroke="#fff9" stroke-width="2"/><path d="m27 78 23 9 23-9" fill="none" stroke="#c4b5fd" stroke-width="3" stroke-linecap="round"/></svg><div>TAMBAUR ARCADE<small>BUBBLE SHOOTER</small></div></div><div class="topBtns"><button class="round" id="sound" aria-label="Sound">♫</button><button class="round" id="shareApp" aria-label="Share game">↗</button><button class="round" id="settings" aria-label="Settings">⚙</button></div></header>
+<header class="top"><div class="brand"><svg class="logo" viewBox="0 0 100 100" aria-label="Tambaur Arcade logo"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#67e8f9"/><stop offset=".48" stop-color="#818cf8"/><stop offset="1" stop-color="#f0abfc"/></linearGradient><radialGradient id="orb"><stop stop-color="#fff"/><stop offset=".35" stop-color="#a5f3fc"/><stop offset="1" stop-color="#0891b2"/></radialGradient></defs><path d="M50 3 91 26v48L50 97 9 74V26Z" fill="#101b3a" stroke="url(#lg)" stroke-width="5"/><path d="M50 13 82 31v38L50 87 18 69V31Z" fill="#172b52" stroke="#ffffff35" stroke-width="2"/><circle cx="36" cy="39" r="13" fill="#fb7185" stroke="#fff9" stroke-width="2"/><circle cx="65" cy="39" r="13" fill="url(#orb)" stroke="#fff9" stroke-width="2"/><circle cx="50" cy="65" r="14" fill="#facc15" stroke="#fff9" stroke-width="2"/><path d="m27 78 23 9 23-9" fill="none" stroke="#c4b5fd" stroke-width="3" stroke-linecap="round"/></svg><div>TAMBAUR ARCADE<small>BUBBLE SHOOTER</small></div></div><div class="topBtns"><button class="round" id="sound" aria-label="Sound">♫</button><button class="round" id="shareApp" aria-label="Share game">↗ <span>SHARE</span></button><button class="round" id="settings" aria-label="Settings">⚙</button></div></header>
 <section class="gameHeading" aria-label="Game title and scores">
   <h1>BUBBLE <span>SHOOTER</span></h1>
   <p class="subtitle">Aim • Match • Blast • Level Up!</p>
@@ -324,19 +336,19 @@ ctx.fillStyle='rgba(8,20,58,.96)';ctx.strokeStyle='rgba(255,255,255,.8)';ctx.lin
 ctx.beginPath();ctx.roundRect(118,7,245,30,15);ctx.fill();ctx.stroke();
 ctx.fillStyle='#31254d';ctx.beginPath();ctx.roundRect(130,15,215,13,7);ctx.fill();
 let progress=Math.min(1,(score%10000)/10000);let pg=ctx.createLinearGradient(130,0,345,0);pg.addColorStop(0,'#38bdf8');pg.addColorStop(1,'#facc15');ctx.fillStyle=pg;ctx.beginPath();ctx.roundRect(130,15,Math.max(8,215*progress),13,7);ctx.fill();
-[0,1,2].forEach((v)=>{ctx.fillStyle=v<Math.floor(progress*3)?'#facc15':'#a5a0b8';ctx.font='16px system-ui';ctx.textAlign='center';ctx.fillText('★',205+v*62,28)});
+[0,1,2].forEach((v)=>{ctx.fillStyle=v<Math.floor(progress*3)?'#facc15':'#a5a0b8';ctx.font='16px "Trebuchet MS"';ctx.textAlign='center';ctx.fillText('★',205+v*62,28)});
 ctx.fillStyle='#3b2fa8';ctx.beginPath();ctx.roundRect(365,6,105,34,9);ctx.fill();
-ctx.fillStyle='#dbeafe';ctx.font='bold 10px system-ui';ctx.fillText('SCORE',418,18);
-ctx.fillStyle='#fff';ctx.font='bold 17px system-ui';ctx.fillText(String(score),418,34);
-ctx.fillStyle='#273f9d';ctx.beginPath();ctx.roundRect(12,314,54,31,9);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 16px system-ui';ctx.textAlign='center';ctx.fillText(String(Math.max(0,maxShots()-shots)),39,335);
+ctx.fillStyle='#dbeafe';ctx.font='bold 10px "Trebuchet MS"';ctx.fillText('SCORE',418,18);
+ctx.fillStyle='#fff';ctx.font='bold 17px "Trebuchet MS"';ctx.fillText(String(score),418,34);
+ctx.fillStyle='#273f9d';ctx.beginPath();ctx.roundRect(12,314,54,31,9);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 16px "Trebuchet MS"';ctx.textAlign='center';ctx.fillText(String(Math.max(0,maxShots()-shots)),39,335);
 ctx.restore();
 
 for(const p of particles){ctx.globalAlpha=Math.max(0,p.life);if(p.ring){ctx.strokeStyle=p.color;ctx.lineWidth=Math.max(1,p.width||2);ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.stroke()}else if(p.smoke){let g=ctx.createRadialGradient(p.x,p.y,1,p.x,p.y,p.r);g.addColorStop(0,p.color);g.addColorStop(1,'rgba(125,145,190,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}else{ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
 if(flight){let raw=Math.min(1,flight.elapsed/flight.duration),ease=1-Math.pow(1-raw,2.2),distance=flight.total*ease,fx=240,fy=518,remain=distance;for(let i=1;i<flight.points.length;i++){let a=flight.points[i-1],b=flight.points[i],seg=Math.hypot(b.x-a.x,b.y-a.y);if(remain<=seg){let q=seg?remain/seg:1;fx=a.x+(b.x-a.x)*q;fy=a.y+(b.y-a.y)*q;break}remain-=seg;fx=b.x;fy=b.y}ctx.save();ctx.globalAlpha=.22;ctx.fillStyle='#020b08';ctx.beginPath();ctx.ellipse(fx+5,fy+9,17,7,0,0,Math.PI*2);ctx.fill();ctx.restore();bubble(fx,fy,flight.color,20);ctx.save();ctx.globalAlpha=.32;ctx.strokeStyle=bright[flight.color];ctx.lineWidth=8;ctx.shadowColor=colors[flight.color];ctx.shadowBlur=14;ctx.beginPath();for(let i=0;i<flight.points.length;i++){let p=flight.points[i];if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);if(i>0&&Math.hypot(p.x-fx,p.y-fy)<4)break}ctx.lineTo(fx,fy);ctx.stroke();ctx.restore()}
 if(drag&&!over&&!paused&&!flight){let tr=traceShot();ctx.save();ctx.setLineDash([5,8]);ctx.strokeStyle='#ffffffd9';ctx.lineWidth=2.5;ctx.shadowColor='#67e8f9';ctx.shadowBlur=8;ctx.beginPath();tr.points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();ctx.setLineDash([]);ctx.restore();if(tr.target){ctx.beginPath();ctx.arc(tr.target.p.x,tr.target.p.y,R+3,0,Math.PI*2);ctx.strokeStyle='#fde68a';ctx.lineWidth=2;ctx.stroke()}}
-ctx.shadowColor='#38bdf8';ctx.shadowBlur=24;ctx.fillStyle='#164e83';ctx.beginPath();ctx.roundRect(187,532,106,55,25);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(240,535,30,Math.PI,0);ctx.fill();ctx.fillStyle='#bfdbfe';ctx.font='900 12px system-ui';ctx.textAlign='center';ctx.fillText('NEXT  ↔',405,515);ctx.font='9px system-ui';ctx.fillStyle='#93c5fd';ctx.fillText('TAP TO SWAP',405,582);
+ctx.shadowColor='#38bdf8';ctx.shadowBlur=24;ctx.fillStyle='#164e83';ctx.beginPath();ctx.roundRect(187,532,106,55,25);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(240,535,30,Math.PI,0);ctx.fill();ctx.fillStyle='#bfdbfe';ctx.font='900 12px "Trebuchet MS"';ctx.textAlign='center';ctx.fillText('NEXT  ↔',405,515);ctx.font='9px "Trebuchet MS"';ctx.fillStyle='#93c5fd';ctx.fillText('TAP TO SWAP',405,582);
 if(swapFlight){let t=Math.min(1,swapFlight.elapsed/swapFlight.duration),e=t*t*(3-2*t);let a={x:240+(405-240)*e,y:540+(550-540)*e},b={x:405+(240-405)*e,y:550+(540-550)*e};ctx.save();ctx.globalAlpha=.2;ctx.strokeStyle='#ffffff';ctx.lineWidth=3;ctx.setLineDash([4,6]);ctx.beginPath();ctx.moveTo(240,540);ctx.lineTo(a.x,a.y);ctx.moveTo(405,550);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore();bubble(a.x,a.y,swapFlight.oldCur,22);bubble(b.x,b.y,swapFlight.oldNext,18)}else{bubble(240,540,cur,22);bubble(405,550,next,18)}
-if(paused||over){ctx.fillStyle='#060b25c9';ctx.fillRect(0,0,W,H);ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='1000 34px system-ui';ctx.fillText(over?(won?'LEVEL CLEAR!':'GAME OVER'):'PAUSED',240,280);ctx.font='600 15px system-ui';ctx.fillStyle='#c7d2fe';ctx.fillText(over?'Tap RESTART to play again':'Tap RESUME to continue',240,312)}}
+if(paused||over){ctx.fillStyle='#060b25c9';ctx.fillRect(0,0,W,H);ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='1000 34px "Trebuchet MS"';ctx.fillText(over?(won?'LEVEL CLEAR!':'GAME OVER'):'PAUSED',240,280);ctx.font='600 15px "Trebuchet MS"';ctx.fillStyle='#c7d2fe';ctx.fillText(over?'Tap RESTART to play again':'Tap RESUME to continue',240,312)}}
 function neighbors(r,col){return cellNeighbors(r,col).filter(([rr,cc])=>grid[rr][cc]>=0)}
 function cluster(r,col,color){let seen=new Set(),stack=[[r,col]],out=[];while(stack.length){let [a,b]=stack.pop(),k=a+','+b;if(seen.has(k)||a<0||a>=ROWS||b<0||b>=COLS||grid[a][b]!==color)continue;seen.add(k);out.push([a,b]);stack.push(...neighbors(a,b))}return out}
 function floating(){let seen=new Set(),stack=[];for(let col=0;col<COLS;col++)if(grid[0][col]>=0)stack.push([0,col]);while(stack.length){let [r,col]=stack.pop(),k=r+','+col;if(seen.has(k)||grid[r]?.[col]<0)continue;seen.add(k);stack.push(...neighbors(r,col))}let drop=[];for(let r=0;r<ROWS;r++)for(let col=0;col<COLS;col++)if(grid[r][col]>=0&&!seen.has(r+','+col)){drop.push([r,col]);grid[r][col]=-1}return drop}
@@ -381,9 +393,9 @@ try {
   console.error('Tambaur game startup failed:', err);
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='#12345a'; ctx.fillRect(0,0,W,H);
-  ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font='bold 20px system-ui';
+  ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.font='bold 20px "Trebuchet MS"';
   ctx.fillText('Game loading issue',240,270);
-  ctx.font='14px system-ui'; ctx.fillStyle='#dbeafe';
+  ctx.font='14px "Trebuchet MS"'; ctx.fillStyle='#dbeafe';
   ctx.fillText('Please close and reopen the game.',240,300);
 }
 })();
