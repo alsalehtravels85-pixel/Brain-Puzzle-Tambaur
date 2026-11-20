@@ -158,7 +158,6 @@ public class MainActivity extends Activity {
         super.onResume();
         if (bannerAd != null) bannerAd.resume();
         if (gameView != null) gameView.onResume();
-        UpdateManager.resumeInstall(this);
     }
 
     @Override public void onBackPressed() {
@@ -167,7 +166,6 @@ public class MainActivity extends Activity {
     }
 
     @Override protected void onDestroy() {
-        UpdateManager.unregister(this);
         if (bannerAd != null) { bannerAd.destroy(); bannerAd = null; }
         if (gameView != null) { gameView.destroy(); gameView = null; }
         super.onDestroy();
