@@ -243,9 +243,64 @@ function nextLevel(){level++;localStorage.setItem('tbsLevel',String(level));shot
 function update(){ $('score').textContent=score;$('best').textContent=best;$('level').textContent=level;for(let k of ['bomb','rainbow','lightning'])$(k+'Count').textContent=powerBag[k];document.querySelectorAll('[data-power]').forEach(b=>b.classList.toggle('active',b.dataset.power===activePower))}
 function startMusic(){if(!music||musicTimer)return;try{musicCtx=musicCtx||new(window.AudioContext||window.webkitAudioContext)();musicCtx.resume();const melody=[523.25,659.25,783.99,659.25,587.33,698.46,880,698.46,523.25,659.25,783.99,987.77,880,783.99,659.25,587.33],bass=[130.81,164.81,196,146.83];musicStep=0;musicTimer=setInterval(()=>{if(!music||!musicCtx)return;const t=musicCtx.currentTime,idx=musicStep++%melody.length;[[melody[idx],.075,.24,'triangle',0],[bass[Math.floor(idx/4)%4],.12,.38,'sine',0],[melody[(idx+2)%melody.length]*1.5,.026,.12,'sine',.045]].forEach(([hz,vol,dur,type,delay])=>{let o=musicCtx.createOscillator(),g=musicCtx.createGain();o.type=type;o.frequency.value=hz;g.gain.setValueAtTime(.0001,t+delay);g.gain.exponentialRampToValueAtTime(vol,t+delay+.018);g.gain.exponentialRampToValueAtTime(.0001,t+delay+dur);o.connect(g);g.connect(musicCtx.destination);o.start(t+delay);o.stop(t+delay+dur+.02)});},300)}catch(e){}}function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null}}function soundPop(){if(!sound)return;try{let ac=musicCtx||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();let t=ac.currentTime;[[760,.22,.11,'sine'],[310,.19,.20,'triangle'],[1180,.10,.08,'sine'],[145,.16,.24,'triangle']].forEach(([hz,vol,dur,type],i)=>{let o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(hz,t+i*.009);o.frequency.exponentialRampToValueAtTime(Math.max(65,hz*.28),t+dur);g.gain.setValueAtTime(.0001,t+i*.009);g.gain.exponentialRampToValueAtTime(vol,t+.012+i*.009);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g);g.connect(ac.destination);o.start(t+i*.009);o.stop(t+dur+.025)})}catch(e){}}
 function bubble(x,y,color,rad=R){let g=ctx.createRadialGradient(x-rad*.38,y-rad*.43,1,x,y,rad*1.12);g.addColorStop(0,'#ffffff');g.addColorStop(.13,'#ffffffed');g.addColorStop(.27,bright[color]+'ee');g.addColorStop(.56,colors[color]+'e8');g.addColorStop(.82,colors[color]+'88');g.addColorStop(1,'#071c38cc');ctx.save();ctx.shadowColor=bright[color];ctx.shadowBlur=rad*.48;ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rad,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#e7fbffdd';ctx.lineWidth=Math.max(1,rad*.075);ctx.stroke();ctx.save();ctx.beginPath();ctx.arc(x,y,rad*.9,0,Math.PI*2);ctx.clip();let glass=ctx.createLinearGradient(x-rad,y-rad,x+rad,y+rad);glass.addColorStop(0,'#ffffff66');glass.addColorStop(.35,'#ffffff05');glass.addColorStop(.72,'#9beaff18');glass.addColorStop(1,'#001b3d66');ctx.fillStyle=glass;ctx.fillRect(x-rad,y-rad,rad*2,rad*2);ctx.strokeStyle='#ffffffa8';ctx.lineWidth=Math.max(1,rad*.055);ctx.beginPath();ctx.arc(x-rad*.12,y-rad*.12,rad*.72,-2.5,.65);ctx.stroke();ctx.restore();ctx.fillStyle='#ffffffed';ctx.beginPath();ctx.ellipse(x-rad*.34,y-rad*.42,rad*.25,rad*.13,-.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ffffffb8';ctx.beginPath();ctx.arc(x+rad*.39,y+rad*.34,Math.max(1.4,rad*.08),0,Math.PI*2);ctx.fill();ctx.restore()}
+
+function drawGarden(tick){
+  // Soft, animated garden scenery stays behind the bubbles and aiming line.
+  ctx.save();
+  // distant rolling hills
+  let hill=ctx.createLinearGradient(0,365,0,610);hill.addColorStop(0,'rgba(64,190,122,.13)');hill.addColorStop(1,'rgba(15,115,76,.42)');
+  ctx.fillStyle=hill;ctx.beginPath();ctx.moveTo(0,430);
+  for(let x=0;x<=480;x+=12)ctx.lineTo(x,420+Math.sin(x*.018+tick*.22)*19+Math.sin(x*.043-tick*.15)*8);
+  ctx.lineTo(480,610);ctx.lineTo(0,610);ctx.closePath();ctx.fill();
+  let near=ctx.createLinearGradient(0,475,0,610);near.addColorStop(0,'rgba(34,197,94,.10)');near.addColorStop(1,'rgba(5,82,54,.42)');
+  ctx.fillStyle=near;ctx.beginPath();ctx.moveTo(0,505);
+  for(let x=0;x<=480;x+=10)ctx.lineTo(x,500+Math.sin(x*.025-tick*.3)*15+Math.sin(x*.06+tick*.2)*6);
+  ctx.lineTo(480,610);ctx.lineTo(0,610);ctx.closePath();ctx.fill();
+  // tree silhouettes on the far edges
+  for(let side=0;side<2;side++){
+    let x=side?465:15;
+    ctx.globalAlpha=.28;ctx.fillStyle='#14532d';ctx.fillRect(x-3,340,7,150);
+    for(let k=0;k<5;k++){
+      let yy=345+k*24,xx=x+Math.sin(tick*.35+k+side)*4;
+      ctx.fillStyle=['#16a34a','#15803d','#22c55e'][k%3];
+      ctx.beginPath();ctx.ellipse(xx,yy,17-k*1.4,23-k*1.5,side?-.25:.25,0,Math.PI*2);ctx.fill();
+    }
+  }
+  // tiny flowers and grass sway along the bottom, clear of the shooter
+  for(let i=0;i<17;i++){
+    let x=8+i*28,y=585+Math.sin(i*2.4+tick*.7)*5;
+    if(x>178&&x<302)continue;
+    let sway=Math.sin(tick*1.8+i)*.12;
+    ctx.globalAlpha=.72;ctx.strokeStyle='#167c45';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x,610);ctx.quadraticCurveTo(x+8*sway,595,x+5*sway,y);ctx.stroke();
+    ctx.fillStyle=['#fef08a','#fb7185','#f0abfc','#ffffff'][i%4];
+    for(let p=0;p<5;p++){let a=p*Math.PI*2/5;ctx.beginPath();ctx.arc(x+Math.cos(a)*4,y+Math.sin(a)*4,2.7,0,Math.PI*2);ctx.fill()}
+    ctx.fillStyle='#facc15';ctx.beginPath();ctx.arc(x,y,2.2,0,Math.PI*2);ctx.fill();
+  }
+  // drifting butterflies with visibly flapping wings
+  for(let i=0;i<3;i++){
+    let x=(65+i*165+Math.sin(tick*.65+i*2)*30+480)%480;
+    let y=205+i*92+Math.sin(tick*1.1+i)*18;
+    let flap=Math.abs(Math.sin(tick*8+i))*0.9+.12;
+    ctx.save();ctx.translate(x,y);ctx.globalAlpha=.52;ctx.shadowColor='#fff';ctx.shadowBlur=8;
+    ctx.fillStyle=['#f9a8d4','#fde68a','#c4b5fd'][i];
+    ctx.beginPath();ctx.ellipse(-5,0,6,8*flap,-.4,0,Math.PI*2);ctx.ellipse(5,0,6,8*flap,.4,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#334155';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(0,-3);ctx.lineTo(0,4);ctx.stroke();ctx.restore();
+  }
+  // floating leaves
+  for(let i=0;i<7;i++){
+    let x=(i*79+Math.sin(tick*.45+i)*18+480)%480;
+    let y=(i*91+tick*(7+i%3)*2)%600;
+    ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(tick+i)*.7);ctx.globalAlpha=.24;
+    ctx.fillStyle='#bbf7d0';ctx.beginPath();ctx.ellipse(0,0,3,7,.4,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+  ctx.restore();
+}
+
 function draw(){ctx.clearRect(0,0,W,H);const tick=performance.now()/1000;
 // Bright arcade-sky playfield inspired by the reference layout.
 let sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#42b9f5');sky.addColorStop(.48,'#72d0ff');sky.addColorStop(1,'#8edfff');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+drawGarden(tick);
 let glow=ctx.createRadialGradient(355,70,5,355,70,190);glow.addColorStop(0,'rgba(255,255,255,.42)');glow.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=glow;ctx.fillRect(160,0,320,260);
 for(let i=0;i<5;i++){let x=30+i*105,y=105+(i%2)*80;ctx.fillStyle='rgba(255,255,255,.12)';ctx.beginPath();ctx.ellipse(x,y,35,7,0,0,Math.PI*2);ctx.fill()}
 ctx.fillStyle='rgba(255,255,255,.18)';ctx.fillRect(0,0,W,3); for(let i=0;i<26;i++){let x=(i*83+Math.sin(tick*.8+i*2.1)*22+480)%480,y=(i*137-tick*(8+i%4)*5+900)%610,pulse=.35+.45*(.5+.5*Math.sin(tick*2.2+i));ctx.globalAlpha=pulse;ctx.fillStyle=['#ffffff','#fff3a6','#c7f9ff','#ffd1f2'][i%4];ctx.beginPath();ctx.arc(x,y,1.1+(i%3)*.65,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
