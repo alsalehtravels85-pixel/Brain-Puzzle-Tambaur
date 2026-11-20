@@ -8,6 +8,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.View;
 import android.content.pm.ActivityInfo;
@@ -41,6 +44,8 @@ public class MainActivity extends Activity {
     private RewardedAd rewardedAd;
     private long lastInterstitialAt = 0L;
     private boolean adsReady = false;
+    private final Handler adHandler = new Handler(Looper.getMainLooper());
+    private int bannerRetrySeconds = 30;
 
     private String bannerId() { return TEST_ADS ? TEST_BANNER : LIVE_BANNER; }
     private String interstitialId() { return TEST_ADS ? TEST_INTERSTITIAL : LIVE_INTERSTITIAL; }
@@ -69,8 +74,26 @@ public class MainActivity extends Activity {
         bannerAd = new AdView(this);
         bannerAd.setAdUnitId(bannerId());
         int adWidth = (int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density);
-        bannerAd.setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth));
-        root.addView(bannerAd, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        AdSize adaptiveSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+        bannerAd.setAdSize(adaptiveSize);
+        bannerAd.setVisibility(View.VISIBLE);
+        bannerAd.setAdListener(new com.google.android.gms.ads.AdListener() {
+            @Override public void onAdLoaded() {
+                Log.i("TambaurAds", "Banner loaded successfully");
+                bannerRetrySeconds = 30;
+                bannerAd.setVisibility(View.VISIBLE);
+            }
+            @Override public void onAdFailedToLoad(LoadAdError error) {
+                Log.w("TambaurAds", "Banner failed: " + error.getCode() + " / " + error.getMessage());
+                int delay = bannerRetrySeconds;
+                bannerRetrySeconds = Math.min(bannerRetrySeconds * 2, 300);
+                adHandler.postDelayed(() -> {
+                    if (adsReady && bannerAd != null && !isFinishing()) bannerAd.loadAd(new AdRequest.Builder().build());
+                }, delay * 1000L);
+            }
+        });
+        int bannerHeight = adaptiveSize.getHeightInPixels(this);
+        root.addView(bannerAd, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, bannerHeight));
 
         setContentView(root);
         gameView.loadUrl("file:///android_asset/index.html");
@@ -134,7 +157,7 @@ public class MainActivity extends Activity {
 
     private class GameAdsBridge {
         @JavascriptInterface public void shareApp() { runOnUiThread(() -> {
-            String link = "https://alsalehtravels85-pixel.github.io/Brain-Puzzle-Tambaur/download.html";
+            String link = "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk";
             Intent send = new Intent(Intent.ACTION_SEND);
             send.setType("text/plain");
             send.putExtra(Intent.EXTRA_SUBJECT, "Tambaur Bubble Shooter");
@@ -165,7 +188,10 @@ public class MainActivity extends Activity {
 
     @Override protected void onResume() {
         super.onResume();
-        if (bannerAd != null) bannerAd.resume();
+        if (bannerAd != null) {
+            bannerAd.resume();
+            if (adsReady) bannerAd.loadAd(new AdRequest.Builder().build());
+        }
         if (gameView != null) gameView.onResume();
         UpdateManager.resumeInstall(this);
     }
@@ -176,6 +202,7 @@ public class MainActivity extends Activity {
     }
 
     @Override protected void onDestroy() {
+        adHandler.removeCallbacksAndMessages(null);
         if (bannerAd != null) { bannerAd.destroy(); bannerAd = null; }
         if (gameView != null) { gameView.destroy(); gameView = null; }
         super.onDestroy();
