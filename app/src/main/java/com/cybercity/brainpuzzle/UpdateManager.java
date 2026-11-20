@@ -16,7 +16,7 @@ public final class UpdateManager {
     private static final String VERSION_URL =
             "https://raw.githubusercontent.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/main/update.json";
     private static final String RELEASE_URL =
-            "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest";
+            "https://github.com/alsalehtravels85-pixel/Brain-Puzzle-Tambaur/releases/latest/download/TambaurBubbleShooter.apk";
     private UpdateManager() {}
 
     public static void check(Activity activity) {
@@ -41,8 +41,8 @@ public final class UpdateManager {
                 if (latestCode > currentCode && !activity.isFinishing()) {
                     activity.runOnUiThread(() -> new AlertDialog.Builder(activity)
                             .setTitle("Update available" + (latestName.isEmpty() ? "" : " • " + latestName))
-                            .setMessage(notes + "\n\nOpen the official release page to download the update?")
-                            .setPositiveButton("Open download page", (dialog, which) -> {
+                            .setMessage(notes + "\n\nDownload the latest APK now?")
+                            .setPositiveButton("Download APK", (dialog, which) -> {
                                 try {
                                     activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RELEASE_URL)));
                                 } catch (Exception ignored) { }
