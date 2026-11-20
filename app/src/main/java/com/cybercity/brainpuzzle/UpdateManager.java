@@ -98,6 +98,29 @@ public final class UpdateManager {
         }
     }
 
+    public static void resumeInstall(Activity activity) {
+        try {
+            File apk = new File(activity.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), APK_NAME);
+            if (apk.exists() && apk.length() > 0) {
+                android.content.SharedPreferences prefs = activity.getSharedPreferences("tbs_update", Context.MODE_PRIVATE);
+                if (prefs.getBoolean("install_pending", false)
+                        && (Build.VERSION.SDK_INT < 26 || activity.getPackageManager().canRequestPackageInstalls())) {
+                    prefs.edit().putBoolean("install_pending", false).apply();
+                    openInstaller(activity, apk);
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private static void openInstaller(Activity activity, File apk) throws Exception {
+        Uri apkUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", apk);
+        Intent install = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+        install.setData(apkUri);
+        install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        install.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+        activity.startActivity(install);
+    }
+
     private static void registerReceiver(Activity activity) {
         if (receiverRegistered) return;
         BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -110,11 +133,9 @@ public final class UpdateManager {
                     if (a == null || a.isFinishing()) return;
                     File apk = new File(a.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), APK_NAME);
                     if (!apk.exists() || apk.length() == 0) throw new IllegalStateException("APK missing");
-                    Uri apkUri = FileProvider.getUriForFile(a, a.getPackageName() + ".fileprovider", apk);
-                    Intent install = new Intent(Intent.ACTION_VIEW);
-                    install.setDataAndType(apkUri, "application/vnd.android.package-archive");
-                    install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    a.startActivity(install);
+                    a.getSharedPreferences("tbs_update", Context.MODE_PRIVATE)
+                            .edit().putBoolean("install_pending", true).apply();
+                    resumeInstall(a);
                 } catch (Exception e) {
                     Toast.makeText(context, "Download finished, but installer could not open. Open the notification to retry.", Toast.LENGTH_LONG).show();
                 }
