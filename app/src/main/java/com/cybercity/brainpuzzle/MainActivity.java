@@ -11,6 +11,7 @@ import android.widget.Toast;
 import android.view.ViewGroup;
 import android.view.View;
 import android.content.pm.ActivityInfo;
+import android.content.Intent;
 
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
@@ -132,6 +133,14 @@ public class MainActivity extends Activity {
     }
 
     private class GameAdsBridge {
+        @JavascriptInterface public void shareApp() { runOnUiThread(() -> {
+            String link = "https://alsalehtravels85-pixel.github.io/Brain-Puzzle-Tambaur/";
+            Intent send = new Intent(Intent.ACTION_SEND);
+            send.setType("text/plain");
+            send.putExtra(Intent.EXTRA_SUBJECT, "Tambaur Bubble Shooter");
+            send.putExtra(Intent.EXTRA_TEXT, "Play Tambaur Bubble Shooter! Download here: " + link);
+            startActivity(Intent.createChooser(send, "Share Tambaur Bubble Shooter"));
+        }); }
         @JavascriptInterface public void showInterstitial() { runOnUiThread(() -> showInterstitialAtBreak()); }
         @JavascriptInterface public void showRewarded() { runOnUiThread(() -> showRewardedForBonus()); }
     }
