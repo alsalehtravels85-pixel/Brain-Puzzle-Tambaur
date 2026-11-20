@@ -134,7 +134,7 @@ public class MainActivity extends Activity {
 
     private class GameAdsBridge {
         @JavascriptInterface public void shareApp() { runOnUiThread(() -> {
-            String link = "https://alsalehtravels85-pixel.github.io/Brain-Puzzle-Tambaur/";
+            String link = "https://alsalehtravels85-pixel.github.io/Brain-Puzzle-Tambaur/download.html";
             Intent send = new Intent(Intent.ACTION_SEND);
             send.setType("text/plain");
             send.putExtra(Intent.EXTRA_SUBJECT, "Tambaur Bubble Shooter");
